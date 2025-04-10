@@ -1,24 +1,24 @@
 # Initializing Application with init.py 
-from flask import Flask 
-from flask_restx import Api, Namespace, Resource
+from flask import Flask, redirect
+from flask_restx import Api 
 
-from .controllers.hello_controller import hello_controller
 
 def create_app(): 
     app = Flask(__name__)
+
+    # Prefix Routing API 
+    api_prefix = "/api/lombok"
     api = Api(
         app, 
-        version = '1.0', 
-        title = 'Api Development', 
-        description = ' Build and Testing API Development'
+        title="Service API For Lombok Gastronomic", 
+        description="This is service API for Lombok Gastronomic APP", 
+        version="1.0", 
+        prefix=api_prefix, 
+        doc=api_prefix
     )
 
-    ns = Namespace('hello', description='Hello API Operation')
-    ns = Namespace('items', description='Item Operations')
-    
-    api.add_namespace(ns)
-
-    from .controllers.hello_controller import ns as hello_namespace
-    api.add_namespace(hello_namespace)
+    app.route('/')
+    def redirecting_home(): 
+        return redirect(api_prefix)
 
     return app
